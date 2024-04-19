@@ -11,9 +11,11 @@ mainContainer.style.alignItems="center"
 mainContainer.style.height="100vh"
 mainContainer.id="main-Container"
 
-   function createNote(){
+function createNote(){
     const note = document.createElement("div");
     mainContainer.append(note);
+    note.className="note"
+    note.classList.add("note");
 
     const navbar = document.createElement("div");
     const bodyContent = document.createElement("div");
@@ -30,6 +32,7 @@ mainContainer.id="main-Container"
     title.style.marginRight="auto"
     title.style.padding="2px"
      
+    menuColor.className="color"
     menuColor.textContent="..."
     menuColor.style.fontSize="20px"
     menuColor.style.color="white"
@@ -42,10 +45,11 @@ mainContainer.id="main-Container"
     menuColor.style.position="relative"
     menuColor.style.bottom="6px"
    
-    menuColor.addEventListener("click",()=>{
+    menuColor.addEventListener("click",(event)=>{
+        event.stopPropagation(); 
         const randomColor= `#${Math.floor(Math.random()*16777215).toString(16)}`
         navbar.style.backgroundColor=`${randomColor}`
-
+        saveNotes()
     })
 
     buttonDelete.textContent="X"
@@ -66,7 +70,7 @@ mainContainer.id="main-Container"
 
 
     navbar.append(title,menuColor,buttonDelete);
-
+    navbar.className="navbar"
     navbar.style.display="flex"
     navbar.style.flexDirection="row"
     navbar.style.justifyContent="space-between"
@@ -82,6 +86,7 @@ mainContainer.id="main-Container"
     navbar.style.zIndex = "2";
 
     const inputField = document.createElement("textarea");
+    inputField.id="input-textarea"
     bodyContent.append(inputField);
     inputField.style.height = "155px";
     inputField.style.width = "294.5px";
@@ -100,6 +105,7 @@ mainContainer.id="main-Container"
            const line = content.split('\n')
            const firstLine = line[0]
            title.textContent=firstLine
+           saveNotes()
      })
       
 
@@ -113,6 +119,11 @@ mainContainer.id="main-Container"
     note.style.position = "absolute";
     note.style.left = `${x}px`;
     note.style.top = `${y}px`;
+
+    noteDragable(note)
+    saveNotes()
+    return note;
+
 };
 
 
@@ -153,3 +164,103 @@ createButton.addEventListener("click",()=>{
 
 
 
+
+function noteDragable(note) {
+    let offsetX, offsetY;
+    let isDragging = false;
+
+    note.addEventListener("mousedown", startDragging);
+
+    function startDragging(event) {
+        const clickedElement = event.target;
+
+        if (clickedElement.tagName.toLowerCase() === "textarea") {
+            return; 
+        }
+
+        event.preventDefault();
+        offsetX = event.clientX - note.getBoundingClientRect().left;
+        offsetY = event.clientY - note.getBoundingClientRect().top;
+        isDragging = true;
+
+        document.addEventListener("mousemove", dragNote);
+        document.addEventListener("mouseup", stopDragging);
+    }
+
+    function dragNote(event) {
+        if (!isDragging) return;
+
+        const newX = event.clientX - offsetX;
+        const newY = event.clientY - offsetY;
+
+        note.style.left = `${newX}px`;
+        note.style.top = `${newY}px`;
+    }
+
+    function stopDragging() {
+        if (!isDragging) return;
+
+        isDragging = false;
+        document.removeEventListener("mousemove", dragNote);
+        document.removeEventListener("mouseup", stopDragging);
+    }
+}
+
+
+
+function saveNotes() {
+    const notesData = Array.from(document.querySelectorAll(".note")).map(note => {
+        return {
+            x: parseInt(note.style.left),
+            y: parseInt(note.style.top),
+            title: note.querySelector("p").textContent,
+            content: note.querySelector("textarea").value,
+            color: note.querySelector(".navbar").style.backgroundColor 
+        };
+    });
+    localStorage.setItem("notes", JSON.stringify(notesData));
+    
+}
+
+
+// Function to load notes from local storage
+function loadNotes() {
+    const savedNotes = JSON.parse(localStorage.getItem("notes"));
+    if (savedNotes) {
+        savedNotes.forEach(noteData => {
+            const note = createNote();
+            note.style.left = `${noteData.x}px`;
+            note.style.top = `${noteData.y}px`;
+            note.querySelector("p").textContent = noteData.title;
+            note.querySelector("textarea").value = noteData.content;
+            note.querySelector(".navbar").style.backgroundColor = noteData.color; // Set the color
+        });
+    }
+}
+
+
+window.addEventListener("load", () => {
+    loadNotes();
+});
+
+
+function removeNoteFromLocalStorage(note) {
+    const notesData = JSON.parse(localStorage.getItem("notes"));
+    const updatedNotesData = notesData.filter(noteData => {
+        return noteData.x !== parseInt(note.style.left) || noteData.y !== parseInt(note.style.top);
+    });
+    localStorage.setItem("notes", JSON.stringify(updatedNotesData));
+}
+
+
+document.addEventListener("click", (event) => {
+    const note = event.target.closest(".note");
+    if (note) {
+        const clickedElement = event.target;
+        if (clickedElement.tagName.toLowerCase() === "button") {
+            note.remove();
+            removeNoteFromLocalStorage(note);
+            saveNotes();
+        }
+    }
+});
