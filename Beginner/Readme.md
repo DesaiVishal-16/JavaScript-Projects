@@ -4,4 +4,4 @@
 
 3. [To-Do List](./To-Do-List) ---- [Visit Site](https://to-do-list-16.vercel.app)
 
-4. [Tic-Tac-Toe](./tic-tac-toe) ---- [Visit Site](https://tic-tac-toe-16.vercel.app)
+4. [Tic-Tac-Toe](./tic-tac-toe) ---- [Visit Site](https://tic-tac-toe-16.netlify.app)
