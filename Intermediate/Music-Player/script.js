@@ -1,99 +1,141 @@
-const musicplayer = document.getElementsByClassName("music-player")
-const playlists = document.getElementsByClassName("playlists-songs")
+const musicContainter = document.getElementById("music-container")
+const musicInfo = document.getElementById("music-info")
+const title = document.getElementById("title")
+const progressContainer = document.getElementById("progress-container")
+const progressBar = document.getElementById("progress")
+const play = document.getElementById("play-button")
+const audio = document.getElementById("audio")
+const iconPlay = document.getElementById("iconPlay")
+const musicImg = document.getElementById("cover")
+const forward = document.getElementById("forward-button")
+const backward = document.getElementById("backward-button")
+const playLists = document.getElementsByClassName("songs-lists")
 
 
-const allsongs = [
-    {
-        id:1,
-        songName:"Can't Stop Me. Can't Even Slow Me Down.",
-        artist:"Quincy Larson",
-        songImg:{
-           src:"./images/id.jpg"
-        },
-        src:"",
-        duration:"3:52"
-    },
-    {
-        id:2,
-        songName:"",
-        artist:"",
-        songImg:"",
-        src:"",
-        duration:"12sec"
-    },
-    {
-        id:3,
-        songName:"", 
-        artist:"",
-        songImg:"",
-        src:"",
-        duration:"12sec"
-    },
-    {
-        id:4,
-        songName:"",
-        artist:"",
-        songImg:"",
-        src:"",
-        duration:"12sec"
-    },
-    {
-        id:5,
-        songName:"",
-        artist:"",
-        songImg:"",
-        src:"",
-        duration:"12sec"
+
+const songs = ["Faded","Perfect","A Year Ago","100 D","A Dusty Road","A Ghost Town"]
+
+
+let songIndex = 0;
+
+loadSong(songs[songIndex])
+
+function loadSong(song){
+    title.innerText=song
+    audio.src=`./music/${song}.mp3`
+    musicImg.src=`./images/artists-img/${song}.jpg`
+}
+
+
+let isPlaying=false
+
+play.addEventListener("click",()=>{
+    if(!isPlaying){
+     playMusic()
+    }else{
+        pauseMusic()
     }
-    
+})
 
-]
+const playMusic = () => {
+    audio.play().then(()=>{
+        isPlaying=true
+        iconPlay.innerHTML="&#10074;&#10074;"
+        musicContainter.classList.add("play")
+    })
+    .catch(error=>console.error(error))
+}
+  
+const pauseMusic=()=>{
+    audio.pause()
+        isPlaying=false
+        iconPlay.innerHTML="&#9654;"
+        musicContainter.classList.remove("play")
+}
+
+const prevSong=()=>{
+    songIndex--
+    if(songIndex<0){
+        songIndex = songs.length -1
+    }
+    loadSong(songs[songIndex])
+    playMusic()
+}
+
+const nextSong=()=>{
+    songIndex++
+    if(songIndex>songs.length-1){
+        songIndex = 0
+    }
+    loadSong(songs[songIndex])
+    playMusic()
+}
+
+const updateProgress = (e) =>{
+    const { duration, currentTime } = e.srcElement;
+    if (isFinite(duration)) { 
+        const progressPercent = (currentTime / duration) * 100;
+        progressBar.style.width = `${progressPercent}%`;
+    }
+}
+
+const setProgress = (e)=> {
+    const width = progressContainer.clientWidth;
+    const clickX = e.offsetX;
+    const duration = audio.duration;
+    if (isFinite(duration)) { 
+        audio.currentTime = (clickX / width) * duration;
+    }
+}
+
+backward.addEventListener("click",prevSong)
+
+forward.addEventListener("click",nextSong)
+
+audio.addEventListener("timeupdate",updateProgress)
+audio.addEventListener("ended",nextSong)
+
+progressContainer.addEventListener("click",setProgress)
 
 
-const userData=()=>{
-const songs = [...allsongs]
-currentSong = null;
-songCurrentTime=0;
+for (let i = 0; i < playLists.length; i++) {
+    playLists[i].addEventListener("click", () => {
+        const selectedSong = songs[i];
+        loadSong(selectedSong);
+        playMusic();
+    });
 }
 
 
 
-const playSong =(id)=>{
-const song =  userData?.songs.find(song=>song.id===id)
-audio.src=song.src;
-audio.songImg=song.songImg.src
-audio.songName=song.songName
-audio.artist=song.artist
-audio.duration=song.duration
-
-if(userData?.currentSong===null || userData?.currentSong.id!=song.id){
-  audio.currentTime=0;
-}else{
-    audio.currentTime=userData?.songCurrentTime
-}
 
 
 
 
-}
-
-
-const audio = document.createElement("audio")
-audio.controls=true;
-const source = document.createElement("source")
-
-
-source.src="https://s3.amazonaws.com/org.freecodecamp.mp3-player-project/cant-stop-me-cant-even-slow-me-down.mp3"
-audio.append(source)
-musicplayer[0].append(audio)
 
 
 
 
-const musicImg = document.getElementsByClassName("music-Img")
 
-const img = document.createElement("img")
 
-musicImg[0].append(img)
-img.src="./images/id1.jpg"
-img.style.height="200px"
+
+
+
+
+
+
+
+
+const likeButtons = document.querySelectorAll(".songs-lists button");
+
+likeButtons.forEach(button => {
+    button.addEventListener("click", () => {
+        button.style.color = "red";
+    });
+});
+
+
+
+
+
+

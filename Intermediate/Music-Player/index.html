@@ -4,31 +4,78 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Music Player</title>
+    <link rel="shortcut icon" href="./images/favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <div class="main-container">
-        <div class="music-player-container">
-            <h1>Music Player</h1>
-            <div class="music-Img">
-              
+        <div class="music-container" id="music-container">
+            <div class="music-info">
+              <h4 id="title"></h4>
+              <div class="progress-container" id="progress-container">
+                <div class="progress" id="progress"></div>
+              </div>
             </div>
-            <div class="music-player">
-                <!-- <audio class="audio" controls>
-                    <source id="source" src="https://s3.amazonaws.com/org.freecodecamp.mp3-player-project/cant-stop-me-cant-even-slow-me-down.mp3" type=""> 
-                </audio> -->
-
+      
+            <audio src="./music/Perfect.mp3" id="audio"></audio>
+      
+            <div class="img-container">
+              <img src="./images/artists-img/faded.jpg" alt="music-cover" id="cover" />
             </div>
-        </div>
+            <div class="navigation">
+              <button id="backward-button" class="action-btn">
+                <span>&lt;&lt;</span>
+              </button>
+              <button id="play-button" class="action-btn action-btn-big">
+                <span id="iconPlay">&#9654;</span>
+              </button>
+              <button id="forward-button" class="action-btn">
+                <span>&gt;&gt;</span>
+              </button>
+            </div>
+          </div>
+                                                                                 
 
         <div class="playlists">
-            <h1>PlayLists</h1>
+            <h1>Playlists</h1>
             <div class="playlists-songs">
-
+            <ul class="songs">
+                <li class="songs-lists">
+                    <img src="./images/artists-img/Faded.jpg">
+                    <div class="artists"><h4>Faded</h4> <span>Alan Walker</span></div>
+                    <button>&#10084;</button>
+                </li>
+                <li class="songs-lists">
+                    <img src="./images/artists-img/Perfect.jpg">
+                    <div class="artists"><h4>Perfect</h4> <span>Ed sheeran</span></div>
+                    <button>&#10084;</button>
+                </li>
+                <li class="songs-lists">
+                    <img src="./images/artists-img/A Year Ago.jpg">
+                    <div class="artists"><h4>A Year Ago</h4> <span>
+                        NEFFEX</span></div>
+                    <button>&#10084;</button>
+                </li>
+                <li class="songs-lists">
+                    <img src="./images/artists-img/100 D.jpg">
+                    <div class="artists"><h4>100 D</h4> <span>Rage</span></div>
+                    <button>&#10084;</button>
+                </li>
+                <li class="songs-lists">
+                    <img src="./images/artists-img/A Dusty Road.jpg">
+                    <div class="artists"><h4>A Dusty Road</h4> <span>Systur</span></div>
+                    <button>&#10084;</button>
+                </li>
+                <li class="songs-lists">
+                    <img src="./images/artists-img/A Ghost Town.jpg">
+                    <div class="artists"><h4>A Ghost Town</h4> <span>Jerry Dammers</span></div>
+                    <button>&#10084;</button>
+                </li>
+            </ul>
             </div>
 
-
+        </div>
         </div>
 
     </div>
