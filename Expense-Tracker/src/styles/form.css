@@ -1,0 +1,38 @@
+form input:not(#type)
+form{
+    display: flex;
+    flex-wrap: wrap;
+    gap:10px;
+}
+
+form div:nth-child(-n+2){
+    flex-basis: 100%;
+}
+form label{
+    font-size:0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+form input:not(#type),form button{
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    height: 42px;
+    font-family: sans-serif;
+    font-size: 1rem;
+}
+form div:nth-child(n+3){
+    flex-basis: calc(50% - 5px);
+}
+form button{
+    background-color:#08089ad7;
+    color:whitesmoke;
+    font-weight: 600;
+    cursor: pointer;
+}
+input#type{
+  appearance: none;
+  position : absolute;
+}

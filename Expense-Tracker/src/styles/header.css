@@ -1,0 +1,29 @@
+header{
+    background-color: #08089ad7;
+    color:#fff;
+    padding: 1rem;
+    text-align: center;
+    border-radius: 5px;
+    display:flex;
+    flex-wrap: wrap;
+} 
+header div{
+    padding: 5px;
+}
+header div:first-child{
+    flex-basis: 100%;
+    font-size: 2.25rem;
+    font-weight: 600;
+}
+header div:nth-child(n+2){
+    flex-basis: 50%;
+    font-size: 1.25rem;
+    font-weight: 500;
+}
+header h5{
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+
