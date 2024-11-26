@@ -23,6 +23,7 @@ export function addTransaction(transaction: TransactionObj):void{
 export function deleteTransaction(id:number):void{
     transactions = transactions.filter((trs)=>trs.id !== id)    
     saveTransactions(transactions)
+    renderList();
 }
 
 export function renderList(){
