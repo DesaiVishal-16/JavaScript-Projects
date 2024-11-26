@@ -19,7 +19,7 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /\.css$/, // Add this rule for CSS files
+        test: /\.css$/, 
         use: ['style-loader', 'css-loader'],
       },
     ],
@@ -39,6 +39,7 @@ module.exports = {
     compress: true,
     port: 9000,
     open: true,
+    historyApiFallback: true,
   },
   mode: 'development',
 };
